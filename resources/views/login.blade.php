@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <p class="text-white-50 small text-uppercase fw-bold" style="letter-spacing: 1px;">IT Team &copy; RSUD Blambangan 2024</p>
+                    <p class="text-white-50 small text-uppercase fw-bold" style="letter-spacing: 1px;">IT Team &copy; RSUD Blambangan {{ date('Y') }}</p>
                 </div>
             </div>
         </div>
