@@ -1,179 +1,279 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('_Layouts.main')
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Phone Ext RSBL</title>
-    <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
-    <!-- Scripts JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-
-    <!-- DataTables -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-    <style>
-        .dataTables_wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        #tableExtension {
-            width: 100% !important;
-        }
-    </style>
-</head>
-
-<body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3 d-flex align-items-center" href="#" style="gap: 10px;">
-            <img src="{{ asset('assets/img/rsud_logo.png') }}" alt="RSUD Logo" style="height: 40px; width: auto;">
-            <span style="font-size: 1.25rem; font-weight: 500;">Phone Ext RSBL</span>
-        </a>
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-                class="fas fa-bars"></i></button>
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                        <form action="{{ route('logout') }}" method="POST" id="logout-form">
-                            @csrf
-                        </form>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <!-- Untuk Super Admin yang dapat mengakses seluruh menu -->
-                        @if (auth()->user()->role == 'super_admin')
-                            <a class="nav-link" href="{{ route('super_admin.extension') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Daftar Memori
-                            </a>
-                            <a class="nav-link" href="{{ route('admin.extension') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Daftar Extension
-                            </a>
-                            <a class="nav-link" href="{{ route('humas.dokter') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Daftar Dokter
-                            </a>
-                        @elseif(auth()->user()->role == 'admin')
-                            <!-- Untuk Admin yang hanya bisa mengakses Extension -->
-                            <a class="nav-link" href="{{ route('admin.extension') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Daftar Extension
-                            </a>
-                        @elseif(auth()->user()->role == 'humas')
-                            <!-- Untuk Humas yang bisa mengakses Extension dan Dokter -->
-                            <a class="nav-link" href="{{ route('humas.extension') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Daftar Extension
-                            </a>
-                            <a class="nav-link" href="{{ route('humas.dokter') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Daftar Dokter
-                            </a>
-                        @endif
-                    </div>
-                </div>
-            </nav>
+@section('content')
+<div class="container-fluid px-4">
+    <div class="d-flex align-items-center justify-content-between">
+        <div>
+            <h1 class="mt-4 fw-bold text-dark">Manajemen Extension</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-primary">Dashboard</a></li>
+                <li class="breadcrumb-item active">Daftar Extension</li>
+            </ol>
         </div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                    <hr>
-
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Tambah Extension
-                        </div>
-                        <div class="card-body">
-                            <form id="addExtensionForm" action="{{ route('store.extension') }}" method="POST">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="ext" class="form-label">Extension</label>
-                                    <input type="text" class="form-control" id="ext" name="ext">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="nama" name="nama">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="card mb-4 mt-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Daftar Extension
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <div class="mb-2">
-                                    <button id="exportPDF" class="btn btn-danger">Export PDF</button>
-                                </div>
-                                <table id="tableExtension" class="table table-striped table-hover table-bordered"
-                                    style="width: 100%;">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Ext</th>
-                                            <th>Nama</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{-- load via ajax --}}
-                                    </tbody>
-
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; TLP EXTENSION 2024</div>
-                    </div>
-                </div>
-            </footer>
+        <div>
+            <button id="exportPDF" class="btn btn-outline-danger shadow-sm fw-bold">
+                <i class="fas fa-file-pdf me-2"></i> Export ke PDF
+            </button>
         </div>
     </div>
+
+    <div class="row">
+        <!-- Form Section -->
+        <div class="col-xl-4 col-md-5">
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary-subtle p-2 rounded-3 me-2">
+                            <i class="fas fa-plus text-primary"></i>
+                        </div>
+                        <h6 class="m-0 fw-bold">Tambah Extension Baru</h6>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="addExtensionForm" action="{{ route('store.extension') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="ext" class="form-label small fw-bold text-muted">NOMOR EXTENSION</label>
+                            <input type="text" class="form-control bg-light border-0 px-3 py-2" id="ext" name="ext" placeholder="Contoh: 101" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="nama" class="form-label small fw-bold text-muted">NAMA RUANGAN / UNIT</label>
+                            <input type="text" class="form-control bg-light border-0 px-3 py-2" id="nama" name="nama" placeholder="Masukkan nama ruangan" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm">
+                            <i class="fas fa-save me-2"></i> Simpan Data
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="col-xl-8 col-md-7">
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary-subtle p-2 rounded-3 me-2">
+                            <i class="fas fa-table text-primary"></i>
+                        </div>
+                        <h6 class="m-0 fw-bold">Database Extension</h6>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive p-4">
+                        <table id="tableExtension" class="table table-hover align-middle w-100">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" width="50">NO</th>
+                                    <th class="text-center" width="100">EXT</th>
+                                    <th>NAMA RUANGAN</th>
+                                    <th class="text-center" width="150">AKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- load via ajax --}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        var table = $('#tableExtension').DataTable({
+            processing: true,
+            serverSide: true,
+            pageLength: 10,
+            language: {
+                "search": "",
+                "searchPlaceholder": "Cari data...",
+                "lengthMenu": "_MENU_",
+                "info": "Menampilkan _START_ s/d _END_ dari _TOTAL_ data",
+                "paginate": {
+                    "next": "<i class='fas fa-chevron-right'></i>",
+                    "previous": "<i class='fas fa-chevron-left'></i>"
+                }
+            },
+            ajax: {
+                url: "{{ route('admin.extension') }}",
+                type: "GET"
+            },
+            columns: [
+                {
+                    data: null,
+                    className: 'text-center text-muted small',
+                    orderable: false,
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: 'ext',
+                    className: 'text-center fw-bold text-primary'
+                },
+                {
+                    data: 'nama',
+                    className: 'fw-semibold text-dark'
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        return `
+                            <div class="btn-group shadow-sm">
+                                <button data-id="${row.id}" id="editExtension" class="btn btn-sm btn-white text-primary border-end" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button data-id="${row.id}" id="deleteExtension" class="btn btn-sm btn-white text-danger" title="Hapus">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            ],
+            order: [[1, 'asc']],
+            responsive: true,
+            drawCallback: function() {
+                $('.dataTables_filter input').addClass('form-control shadow-sm border-0 bg-light px-3 py-2 rounded-pill');
+                $('.dataTables_length select').addClass('form-select border-0 bg-light shadow-sm');
+            }
+        });
+
+        // Event Handlers (Add, Delete, Edit)
+        $('#addExtensionForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.status === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Tersimpan!',
+                            text: 'Data extension berhasil ditambahkan',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            toast: true,
+                            position: 'top-end'
+                        });
+                        $('#addExtensionForm')[0].reset();
+                        table.ajax.reload();
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire({ icon: 'error', title: 'Kesalahan', text: 'Gagal menyimpan data.' });
+                }
+            });
+        });
+
+        $('#tableExtension').on('click', '#deleteExtension', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Hapus Data?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/panel/extension/${id}/destroy`,
+                        type: 'GET',
+                        success: function() {
+                            Swal.fire({ icon: 'success', title: 'Dihapus!', text: 'Data telah berhasil dihapus.', timer: 1000, showConfirmButton: false });
+                            table.ajax.reload();
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#tableExtension').on('click', '#editExtension', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            $.ajax({
+                url: `/panel/extension/${id}/edit`,
+                type: 'GET',
+                success: function(response) {
+                    var modalHtml = `
+                        <div class="modal fade" id="editExtensionModal" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+                                    <div class="modal-header border-0 pb-0">
+                                        <h5 class="modal-title fw-bold">Edit Extension</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form id="editExtensionForm">
+                                        @csrf
+                                        <div class="modal-body p-4">
+                                            <input type="hidden" name="id" value="${response.id}">
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold text-muted">EXTENSION</label>
+                                                <input type="text" class="form-control bg-light border-0 px-3 py-2" name="ext" value="${response.ext}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label small fw-bold text-muted">NAMA RUANGAN</label>
+                                                <input type="text" class="form-control bg-light border-0 px-3 py-2" name="nama" value="${response.nama}" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer border-0 pt-0 p-4">
+                                            <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-primary px-4 shadow-sm">Update Data</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    $('#editExtensionModal').remove();
+                    $('body').append(modalHtml);
+                    new bootstrap.Modal(document.getElementById('editExtensionModal')).show();
+                }
+            });
+        });
+
+        $(document).on('submit', '#editExtensionForm', function(e) {
+            e.preventDefault();
+            var id = $('input[name="id"]').val();
+            $.ajax({
+                url: `/panel/extension/${id}/update`,
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.status === 200) {
+                        Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data diperbarui', timer: 1500, showConfirmButton: false });
+                        $('#editExtensionModal').modal('hide');
+                        table.ajax.reload();
+                    }
+                }
+            });
+        });
+
+        $('#exportPDF').on('click', function() {
+            window.location.href = "{{ route('export') }}";
+        });
+    });
+</script>
+@endpush
+
 
     <script type="text/javascript">
         $(document).ready(function() {

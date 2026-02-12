@@ -12,56 +12,56 @@ class HumasController extends Controller
 {
     public function index() // untuk datatable extension
     {
-        if (request()->ajax()) {
-            $start = request()->start ?? 0;
-            $length = request()->length ?? 10;
+        try {
+            if (request()->ajax()) {
+                $start = request()->input('start', 0);
+                $length = request()->input('length', 10);
 
-            $query = DaftarExtension::query();
+                $query = DaftarExtension::query();
 
-            // Pencarian
-            if (request()->has('search') && request()->search['value'] != '') {
-                $searchValue = request()->search['value'];
-                $query->where(function ($q) use ($searchValue) {
-                    $q->where('ext', 'like', "%{$searchValue}%")
-                        ->orWhere('nama', 'like', "%{$searchValue}%");
-                });
-            }
-
-            // Sorting
-            if (request()->has('order')) {
-                foreach (request()->order as $order) {
-                    $columnIndex = $order['column'];
-                    $columnName = request()->columns[$columnIndex]['data'];
-
-                    // Handling khusus untuk kolom nomor urut
-                    if ($columnName === 'id') {
-                        $direction = $order['dir'];
-                        $query->orderBy('id', $direction);
-                    } else {
-                        $direction = $order['dir'];
-                        $query->orderBy($columnName, $direction);
-                    }
+                // Pencarian
+                if (request()->has('search') && !empty(request()->search['value'])) {
+                    $searchValue = request()->search['value'];
+                    $query->where(function ($q) use ($searchValue) {
+                        $q->where('ext', 'like', "%{$searchValue}%")
+                            ->orWhere('nama', 'like', "%{$searchValue}%");
+                    });
                 }
+
+                // Sorting
+                if (request()->has('order') && !empty(request()->order)) {
+                    $columnIndex = request()->order[0]['column'];
+                    $columnData = request()->columns[$columnIndex]['data'];
+                    $direction = request()->order[0]['dir'];
+                    
+                    if ($columnData && $columnData != 'no') {
+                        $query->orderBy($columnData, $direction);
+                    } else {
+                        $query->orderBy('id', 'desc');
+                    }
+                } else {
+                    $query->orderBy('id', 'desc');
+                }
+
+                $recordsTotal = DaftarExtension::count();
+                $recordsFiltered = $query->count();
+
+                if ($length != -1) {
+                    $data = $query->offset($start)->limit($length)->get();
+                } else {
+                    $data = $query->get();
+                }
+
+                return response()->json([
+                    'draw' => intval(request()->input('draw')),
+                    'recordsTotal' => $recordsTotal,
+                    'recordsFiltered' => $recordsFiltered,
+                    'data' => $data
+                ]);
             }
-
-            // Total records sebelum pagination
-            $totalRecords = $query->count();
-
-            // Pagination manual
-            if ($length == -1) {
-                $data = $query->get(); // Ambil semua data jika length adalah -1
-            } else {
-                $data = $query->offset($start)
-                    ->limit($length)
-                    ->get();
-            }
-
-            return response()->json([
-                'draw' => intval(request()->draw),
-                'recordsTotal' => DaftarExtension::count(),
-                'recordsFiltered' => $totalRecords,
-                'data' => $data
-            ]);
+        } catch (\Exception $e) {
+            \Log::error('HumasController Extension AJAX error: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         return view('humas.humas');
@@ -69,51 +69,53 @@ class HumasController extends Controller
 
     public function dokter()
     {
-        if (request()->ajax()) {
-            $start = request()->start ?? 0;
-            $length = request()->length ?? 10;
+        try {
+            if (request()->ajax()) {
+                $start = request()->input('start', 0);
+                $length = request()->input('length', 10);
 
-            Log::info('Search Value: ' . request()->search['value']);
-            $query = Dokter::query();
+                $query = Dokter::query();
 
-            // Pencarian
-            if (request()->has('search') && request()->search['value'] != '') {
-                $searchValue = request()->search['value'];
-                $query->where(function ($q) use ($searchValue) {
-                    $q->where('nama', 'like', "%{$searchValue}%")
-                        ->orWhere('nomor_hp', 'like', "%{$searchValue}%");
-                });
-            }
-
-            // Sorting
-            if (request()->has('order')) {
-                foreach (request()->order as $order) {
-                    $columnIndex = $order['column'];
-                    $columnName = request()->columns[$columnIndex]['data'];
-
-                    $direction = $order['dir'];
-                    $query->orderBy($columnName, $direction);
+                // Pencarian (Hanya Nama karena nomor_hp adalah array/JSON)
+                if (request()->has('search') && !empty(request()->search['value'])) {
+                    $searchValue = request()->search['value'];
+                    $query->where('nama', 'like', "%{$searchValue}%");
                 }
+
+                // Sorting
+                if (request()->has('order') && !empty(request()->order)) {
+                    $columnIndex = request()->order[0]['column'];
+                    $columnData = request()->columns[$columnIndex]['data'];
+                    $direction = request()->order[0]['dir'];
+                    
+                    if ($columnData && !in_array($columnData, ['no', 'nomor_hp'])) {
+                        $query->orderBy($columnData, $direction);
+                    } else {
+                        $query->orderBy('id', 'desc');
+                    }
+                } else {
+                    $query->orderBy('id', 'desc');
+                }
+
+                $recordsTotal = Dokter::count();
+                $recordsFiltered = $query->count();
+
+                if ($length != -1) {
+                    $data = $query->offset($start)->limit($length)->get();
+                } else {
+                    $data = $query->get();
+                }
+
+                return response()->json([
+                    'draw' => intval(request()->input('draw')),
+                    'recordsTotal' => $recordsTotal,
+                    'recordsFiltered' => $recordsFiltered,
+                    'data' => $data
+                ]);
             }
-
-            // Total records sebelum pagination
-            $totalRecords = $query->count();
-
-            // Pagination manual
-            if ($length == -1) {
-                $data = $query->get(); // Ambil semua data jika length adalah -1
-            } else {
-                $data = $query->offset($start)
-                    ->limit($length)
-                    ->get();
-            }
-
-            return response()->json([
-                'draw' => intval(request()->draw),
-                'recordsTotal' => Dokter::count(),
-                'recordsFiltered' => $totalRecords,
-                'data' => $data
-            ]);
+        } catch (\Exception $e) {
+            \Log::error('HumasController Dokter AJAX error: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
         return view('humas.humas_dokter');
