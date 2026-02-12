@@ -23,7 +23,7 @@
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-white py-3">
                     <div class="d-flex align-items-center">
-                        <div class="bg-info-subtle p-2 rounded-3 me-2" style="background-color: #e0f2fe;">
+                        <div class="bg-info-subtle p-2 rounded-3 me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px; background-color: #e0f2fe;">
                             <i class="fas fa-user-md text-info"></i>
                         </div>
                         <h6 class="m-0 fw-bold">Tambah Dokter Baru</h6>
@@ -62,7 +62,7 @@
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-white py-3">
                     <div class="d-flex align-items-center">
-                        <div class="bg-primary-subtle p-2 rounded-3 me-2">
+                        <div class="bg-primary-subtle p-2 rounded-3 me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
                             <i class="fas fa-address-card text-primary"></i>
                         </div>
                         <h6 class="m-0 fw-bold">Database Dokter</h6>

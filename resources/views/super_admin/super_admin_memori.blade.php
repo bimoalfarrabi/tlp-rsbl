@@ -23,7 +23,7 @@
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-white py-3">
                     <div class="d-flex align-items-center">
-                        <div class="bg-primary-subtle p-2 rounded-3 me-2">
+                        <div class="bg-primary-subtle p-2 rounded-3 me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
                             <i class="fas fa-plus text-primary"></i>
                         </div>
                         <h6 class="m-0 fw-bold">Tambah Memori Baru</h6>
@@ -53,7 +53,7 @@
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-white py-3">
                     <div class="d-flex align-items-center">
-                        <div class="bg-primary-subtle p-2 rounded-3 me-2">
+                        <div class="bg-primary-subtle p-2 rounded-3 me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
                             <i class="fas fa-address-book text-primary"></i>
                         </div>
                         <h6 class="m-0 fw-bold">Database Memori</h6>
