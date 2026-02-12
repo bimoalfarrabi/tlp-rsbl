@@ -102,7 +102,7 @@
                 },
                 {
                     data: 'ext',
-                    className: 'text-center fw-bold text-primary fs-5'
+                    className: 'text-center fw-bold text-primary fs-6'
                 },
                 {
                     data: 'nama',

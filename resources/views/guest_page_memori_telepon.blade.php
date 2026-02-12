@@ -94,7 +94,7 @@
                 },
                 {
                     data: 'memori',
-                    className: 'text-center fw-bold text-info fs-5'
+                    className: 'text-center fw-bold text-info fs-6'
                 },
                 {
                     data: 'nama',
