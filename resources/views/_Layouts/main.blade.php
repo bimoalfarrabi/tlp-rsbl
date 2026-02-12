@@ -87,6 +87,10 @@
             background-color: var(--rs-primary) !important;
         }
 
+        .sb-sidenav-light .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+            color: #ffffff !important;
+        }
+
         .sb-sidenav-light .sb-sidenav-menu .nav-link .sb-nav-link-icon {
             color: inherit;
         }
@@ -107,6 +111,29 @@
 
         .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
             padding-top: 70px;
+        }
+
+        /* Action Buttons Hover Effects */
+        .btn-group .btn-white {
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .btn-group .btn-white:hover {
+            background-color: #f8fafc !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+
+        .btn-group .btn-white.text-primary:hover {
+            color: var(--rs-primary-dark) !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        .btn-group .btn-white.text-danger:hover {
+            color: #b91c1c !important;
+            border-color: #e2e8f0 !important;
         }
     </style>
 </head>

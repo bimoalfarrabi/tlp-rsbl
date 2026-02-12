@@ -129,10 +129,10 @@
                     render: function(data, type, row) {
                         return `
                             <div class="btn-group shadow-sm">
-                                <button data-id="${row.id}" id="editExtension" class="btn btn-sm btn-white text-primary border-end" title="Edit">
+                                <button data-id="${row.id}" id="editExtension" class="btn btn-white text-primary border-end px-3 py-2" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button data-id="${row.id}" id="deleteExtension" class="btn btn-sm btn-white text-danger" title="Hapus">
+                                <button data-id="${row.id}" id="deleteExtension" class="btn btn-white text-danger px-3 py-2" title="Hapus">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
