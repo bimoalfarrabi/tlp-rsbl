@@ -275,12 +275,14 @@
                     </div>
                 </div>
                 
-                <div class="sb-sidenav-footer bg-light border-top mt-auto">
+                <div class="sb-sidenav-footer bg-light border-top mt-auto d-flex align-items-center justify-content-center" style="height: 72px;">
                     @auth
-                        <div class="small text-muted">Role:</div>
-                        <div class="fw-bold text-primary">{{ strtoupper(str_replace('_', ' ', Auth::user()->role)) }}</div>
+                        <div class="w-100 px-3">
+                            <div class="small text-muted">Role:</div>
+                            <div class="fw-bold text-primary">{{ strtoupper(str_replace('_', ' ', Auth::user()->role)) }}</div>
+                        </div>
                     @else
-                        <div class="small text-muted text-center py-2 text-uppercase fw-bold" style="font-size: 0.65rem;">Sistem Informasi RSUD</div>
+                        <div class="small text-muted text-center py-2 text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Sistem Informasi RSUD</div>
                     @endauth
                 </div>
             </nav>
