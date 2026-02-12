@@ -295,7 +295,7 @@
             <footer class="py-4 bg-white border-top mt-5">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">IT Team &copy; RSUD Blambangan 2024</div>
+                        <div class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">IT Team &copy; RSUD Blambangan {{ date('Y') }}</div>
                         <div>
                             <span class="text-muted">Versi 2.0</span>
                         </div>
