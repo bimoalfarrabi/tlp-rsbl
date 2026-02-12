@@ -135,6 +135,49 @@
             color: #b91c1c !important;
             border-color: #e2e8f0 !important;
         }
+
+        /* DataTables Pagination Styling Fix */
+        .dataTables_wrapper .dataTables_paginate {
+            padding-top: 1.25rem !important;
+            padding-bottom: 1.25rem !important;
+            margin-right: 1.25rem !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border-radius: 8px !important;
+            border: 1px solid #e2e8f0 !important;
+            margin-left: 4px !important;
+            padding: 0.4rem 0.8rem !important;
+            background: #ffffff !important;
+            color: #64748b !important;
+            font-weight: 500 !important;
+            transition: all 0.2s !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #f1f5f9 !important;
+            color: var(--rs-primary) !important;
+            border-color: var(--rs-primary) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background: var(--rs-primary) !important;
+            color: #ffffff !important;
+            border-color: var(--rs-primary) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            opacity: 0.5 !important;
+            cursor: not-allowed !important;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            padding-top: 1.5rem !important;
+            padding-left: 1.25rem !important;
+            color: #64748b !important;
+            font-size: 0.875rem !important;
+        }
     </style>
 </head>
 
